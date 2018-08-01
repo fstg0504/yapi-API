@@ -17,18 +17,17 @@
   height: .56rem;
   line-height: .56rem;
   padding: 0;
+  background: #ffffff;
   .logo {
     position: relative;
     float: left;
     line-height: .56rem;
     height: .56rem;
-    width: 56px;
-    border-right: 1px solid #55616d;
-    border-left: 1px solid #55616d;
+    width: 157px;
+    border-right: 1px solid #e1e5e4;
     background-color: inherit;
     transition: all .2s;
     &:hover{
-      background-color: #2395f1;
     }
     .href {
       text-decoration: none;
@@ -41,11 +40,6 @@
       margin-left: .38rem;
     }
     .img {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      left: 50%;
-      transform: translate(-16px,-17px);
     }
     .ui-badge {
       position: absolute;
@@ -75,6 +69,17 @@
     //   float: right;
     //   right: -.27rem;
     // }
+  }
+  .breadcrumb-container{
+    .ant-breadcrumb{
+      span{color: #4a4a4a;}
+      .ant-breadcrumb-link {
+        a {
+          color: #4a4a4a;
+        }
+      }
+      .ant-breadcrumb-separator{color: #4a4a4a;}
+    }
   }
 
   .nav-toolbar {

@@ -42,7 +42,7 @@ class Content extends Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const params = this.props.match.params;
     this.actionId = params.actionId;
     this.handleRequest(this.props);
@@ -52,7 +52,7 @@ class Content extends Component {
     document.getElementsByTagName('title')[0].innerText = this.title;
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const params = nextProps.match.params;
     if (params.actionId !== this.actionId) {
       this.actionId = params.actionId;
@@ -130,7 +130,7 @@ class Content extends Component {
 
     const tabs = (
       <Tabs
-        className="tabs-large"
+        className="tabs-large right-face-tabs"
         onChange={this.onChange}
         activeKey={this.state.curtab}
         defaultActiveKey="view"

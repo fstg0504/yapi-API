@@ -1,1 +1,20 @@
 
+.router-container{
+  .g-row{padding-left: 0;padding-right: 0;}
+  .news-timeline{
+    .news-content{
+      .ant-timeline-item{
+        .ant-timeline-item-content{background: #f9f9f9;}
+        .logMesHeade{
+          background-color: #f1f1f1;
+          .logoTimeago{color: #999999;}
+          .logtype,.logtime{color: #333333;}
+        }
+        .logcontent{
+          color: #333333;
+          a{color: #82b200;}
+        }
+      }
+    }
+  }
+}

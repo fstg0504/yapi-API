@@ -79,7 +79,7 @@ class Interface extends Component {
     this.props.history.push('/project/' + params.id + '/interface/' + action)
     
   }
-  async componentWillMount(){
+  async UNSAFE_componentWillMount(){
     this.props.setColData({
       isShowCol: true
     })
@@ -92,14 +92,14 @@ class Interface extends Component {
     
    
     return (
-      <Layout style={{minHeight: 'calc(100vh - 156px)', marginLeft: '24px', marginTop: '24px'}}>
+      <Layout style={{minHeight: 'calc(100vh - 156px)'}}>
         <Sider style={{ height: '100%' }} width={300}>
           <div className="left-menu">
             <Tabs type="card" className="tabs-large" activeKey={activeKey} onChange={this.onChange}>
-              <Tabs.TabPane tab="接口列表" key="api">
+              <Tabs.TabPane className="ltab1" tab="接口列表" key="api">
                 
               </Tabs.TabPane>
-              <Tabs.TabPane tab="测试集合" key="colOrCase" >
+              <Tabs.TabPane className="ltab2" tab="测试集合" key="colOrCase" >
                 
               </Tabs.TabPane>
             </Tabs>
@@ -111,7 +111,7 @@ class Interface extends Component {
           </div>
         </Sider>
         <Layout>
-          <Content style={{ height: '100%', margin: '0 24px 0 16px', overflow: 'initial',backgroundColor: '#fff'}}>
+          <Content style={{ height: '100%', margin: '0 0 0 16px', overflow: 'initial',backgroundColor: '#fff'}}>
             <div className="right-content">
               <Switch>
                 <Route exact path="/project/:id/interface/:action" component={InterfaceRoute} />

@@ -119,7 +119,7 @@ class InterfaceColContent extends Component {
     this.onMoveRow = this.onMoveRow.bind(this);
   }
 
-  async componentWillMount() {
+  async UNSAFE_componentWillMount() {
     const result = await this.props.fetchInterfaceColList(this.props.match.params.id);
     await this.props.getToken(this.props.match.params.id);
     let { currColId } = this.props;
@@ -401,7 +401,7 @@ class InterfaceColContent extends Component {
     }
   }
 
-  async componentWillReceiveProps(nextProps) {
+  async UNSAFE_componentWillReceiveProps(nextProps) {
     let newColId = !isNaN(nextProps.match.params.actionId) ? +nextProps.match.params.actionId : 0;
 
     if ((newColId && this.currColId && newColId !== this.currColId) || nextProps.isRander) {

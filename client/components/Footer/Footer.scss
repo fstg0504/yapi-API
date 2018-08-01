@@ -2,64 +2,221 @@
 @import '../../styles/mixin.scss';
 
 .footer-wrapper{
-  height: 2.4rem;
   width: 100%;
   background-color: $color-bg-dark;
   overflow: hidden;
   position: relative;
   z-index: 0;
 }
-
-.footer-container{
-  margin: 0 auto !important;
-  padding: .48rem .24rem;
-  max-width: 12.2rem;
-  .icon {
-    font-size: .16rem;
-    margin-right: .08rem;
-  }
-  .title {
-    color: #8898aa;
-    font-size: .14rem;
-    margin-bottom: .08rem;
-  }
-  .link {
-    font-size: .14rem;
-    font-weight: 200;
-    color: #8898aa;
-    line-height: .3rem;
-    transition: color .2s;
-    &:hover {
-      color: $color-bg-gray;
-    }
-  }
+/*footer start*/
+.cf { zoom: 1; }
+.cf:before,.cf:after{ content: ""; display: table; }
+.cf:after { clear: both; }
+.billfooter{
+  background-color: #f5f7f6;
 }
-.footItem{
-  padding: 24px 2%;
-  width: 25%;
+.billfooter .wrap{
+  margin: 0 auto; width: 900px;
+}
+.billfooter .bg-container{
+  width: 100%;
+  height: 514px;
+  background: #13182c url('https://www.apicloud.com/img/index-bg-3.jpg') center center no-repeat;
+  background-size: 100% 514px;
+  padding-top: 144px
+}
+.billfooter h1{
+  font-size: 38px; letter-spacing: 10px;
+  margin-bottom: 68px;
+}
+.billfooter #index-form{
+  width: 980px; overflow: hidden;
+  margin: 0 auto;
+  background-color: rgba(0,0,0,.5);
+  border-radius: 13px;
+  text-align: center;
+  padding: 27px 0 27px 14px;
+}
+.billfooter #index-form input{
+  width: 348px;
+  height: 50px; line-height: 40px\9;
+  border-radius: 6px;
   float: left;
-  div{
-    margin: 6px 0;
+  font-size: 20px;
+  margin: 0 5px;
+}
+.billfooter #index-form button{
+  width: 216px;
+  height: 50px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 20px; letter-spacing: 4px;
+  vertical-align: bottom;
+  background-color: #609BE3;
+  color: #FFF;
+  margin: 0 5px;
+}
+.billfooter .logos-out{
+  height: 216px;
+  margin-top: 66px;
+  border-bottom: 1px solid #E5E5E5;
+}
+.billfooter h3{
+  text-align: center;
+  color: #575757;
+  font-size: 28px;
+  margin: 0;
+  margin-bottom: 60px;
+}
+.billfooter .logos-contain{
+  text-align: center;
+}
+.billfooter .logos-links{
+  text-align: center;
+  margin: 0 35px;
+}
+.billfooter{
+  background-color: #000;
+  min-height: 284px;
+  text-align: center;
+}
+.billfooter dl{
+  text-align: left; float: left;
+  width: 16%;
+  font-size: 14px;
+  display: inline-block;
+  margin-top: 46px;
+  vertical-align: top;
+}
+.billfooter dt{
+  color: #FFF;
+  font-weight: normal;
+  margin: 5px 0;
+}
+.billfooter dd{
+  margin: 5px 0;
+}
+.billfooter dd a{
+  color: #666;
+}
+.billfooter .footer-right{
+  width: 20%; float: right;
+  display: inline-block;
+  text-align: right;
+}
+.billfooter .footer-right .share{
+  margin: 0;
+  margin-top: 46px;
+}
+.billfooter .footer-right .share-links{
+  margin-left: 10px;width: 30px;height: 30px;display: inline-block;
+}
+.billfooter .weixinImg{
+  background: url('https://www.apicloud.com/img/media/appoverview.png') no-repeat;
+  background-position:-326px -285px;
+}
+.billfooter .weiboImg{
+  background: url('https://www.apicloud.com/img/media/appoverview.png') no-repeat;
+  background-position:-404px -285px;
+}
+.billfooter .facebook{
+  background: url('https://www.apicloud.com/img/media/appoverview.png') no-repeat;
+  background-position:-366px -285px;
+}
+.billfooter .twitter{
+  background: url('https://www.apicloud.com/img/media/appoverview.png') no-repeat;
+  background-position:-285px -285px;
+}
+/* .billfooter .footer-right .copyright{
+    font-size: 12px;
+    color: #999;
+    text-align: right;
+    margin-top: 64px;
+} */
+.footer-right .qrcode{
+  margin-top: 30px;
+  width: 140px;
+  height: 154px;
+  background: url('https://www.apicloud.com/img/qrcode.jpg') no-repeat;
+}
+.en .footer-right .qrcode{
+  background: url('https://www.apicloud.com/img/user_qrcode2.png') no-repeat;
+}
+.billfooter .copyright label{
+  font-size: 14px;
+  line-height: 71px;
+
+  clear: both;
+
+  width: 100%;
+  height: 72px;
+  margin-top: 40px;
+
+  text-align: center;
+
+  color: #999;
+  border-top: 1px solid #222;
+}
+.billfooter .copyright label a{
+  color: #999;
+  text-decoration: none;
+}
+.copyright{
+  clear: both; padding-top: 30px;
+}
+
+/*for Pad*/
+@media (max-width: 768px) {
+  .header .link-group .links{
+    padding: 0 10px;
   }
-  a{
-    font-weight: 200;
-    color: #b3bdc1;
-    &:hover{
-      color: white;
-    }
+  .wrapper1 .section5 #index-form{
+    width: 700px;
+  }
+  .wrapper1 .section5 #index-form input{
+    width: 30%;
+  }
+  .billfooter .wrap{
+    width: 700px !important;
+  }
+  .wrapper1 .section5 .billfooter, .billfooter{
+    padding: 0 20px;
+  }
+  .wrapper1 .section2 .row-contain{
+    margin: 74px 40px 110px 40px;
+    max-width: 700px;
+  }
+  .wrapper1 .section3 .row-contain{
+    margin: 74px 40px;
+    max-width: 700px;
+  }
+  .wrapper1 .section4 .row-contain-left, .wrapper1 .section4 .row-contain-right{
+    float: none;
+    margin: 0 auto;
+  }
+  .billfooter .footer-right{
+    width: 28%;
   }
 }
-.copyRight{
-    padding: 24px 2%;
-    width: 25%;
-    float: left;
-    font-size: 13px;
-    text-indent: 1em;
-    h4{
-        font-size: 14px;
-        margin: 0 auto 13px;
-        font-weight: 500;
-        position: relative;
-        text-indent: 0;
-    }
+li .icon-mod,li .icon-tpl{
+  width: 20px !important;
+  height: 20px !important;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  vertical-align: text-bottom !important;
 }
+li .icon-mod{
+  background: url(/img/modstore_mod_n.png) center center no-repeat !important;
+}
+li .icon-tpl{
+  background: url(/img/tpl_store.png) center center no-repeat !important;
+}
+/*li:hover .icon-mod,.icon-mod:hover,li:active .icon-mod,.icon-mod:active{*/
+/*background: url(/img/modstore_mod_l.png) center center no-repeat !important;*/
+/*}*/
+/*li:hover .icon-tpl,.icon-tpl:hover,li:active .icon-mod,.icon-tpl:active,a:hover .icon-tpl,a:active .icon-tpl{*/
+/*background: url(/img/tpl_store_h.png) center center no-repeat !important;*/
+/*}*/
+.index-menu li .fa.icon-cog,.index-menu li .fa.icon-signout {font-size: 22px !important;}
+/*footer end*/

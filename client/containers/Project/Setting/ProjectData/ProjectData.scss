@@ -2,7 +2,7 @@
     display: flex;
     .dataImportCon{
         min-width: 304px;
-        background-color: #ececec;
+        background-color: #f9f9f9;
         padding: 16px;
         border-radius: 4px;
 
@@ -65,6 +65,34 @@
             width: 100px;
             height:35px;
         }
+        .ant-radio-group{
+          .ant-radio{
+          }
+          .ant-radio-wrapper:hover .ant-radio .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio-focused .ant-radio-inner {
+            border-color: #729f00;
+          }
+          .ant-radio-checked .ant-radio-inner{
+            border-color: #729f00;
+            &:after{
+              background-color: #729f00;
+            }
+          }
+          .ant-radio-checked:after{
+            border: 1px solid #729f00;
+          }
+          .ant-switch-checked {
+            background-color: #729f00;
+          }
+          .ant-switch-checked .ant-switch-inner{}
+        }
+      .ant-upload{
+        p.ant-upload-drag-icon .anticon {
+          color: #729f00;
+        }
+      }
+      h3{
+        a{color: #636363;}
+      }
     }
 }
 

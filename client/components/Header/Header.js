@@ -3,6 +3,7 @@ import React, { PureComponent as Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie'
 import { Icon, Layout, Menu, Dropdown, message, Tooltip, Popover, Tag } from 'antd';
 import { checkLoginState, logoutActions, loginTypeAction } from '../../reducer/modules/user';
 import { changeMenuItem } from '../../reducer/modules/menu';
@@ -116,7 +117,14 @@ MenuUser.propTypes = {
 };
 
 const ToolUser = props => {
-  let imageUrl = props.imageUrl ? props.imageUrl : `/api/user/avatar?uid=${props.uid}`;
+  const origin = '//www.apicloud.com';
+  let imageUrl;
+  let userIcon = Cookies.get('userIcon');
+  if(userIcon){
+      imageUrl = origin+'/'+userIcon;
+  } else {
+      imageUrl= props.imageUrl ? props.imageUrl : `/api/user/avatar?uid=${props.uid}`;
+  }
   return (
     <ul>
       <li className="toolbar-li item-search">
@@ -130,13 +138,6 @@ const ToolUser = props => {
         arrowPointAtCenter
         visible={props.studyTip === 1 && !props.study}
       >
-        <Tooltip placement="bottom" title={'我的关注'}>
-          <li className="toolbar-li">
-            <Link to="/follow">
-              <Icon className="dropdown-link" style={{ fontSize: 16 }} type="star" />
-            </Link>
-          </li>
-        </Tooltip>
       </Popover>
       <Popover
         overlayClassName="popover-index"
@@ -312,7 +313,7 @@ export default class HeaderCom extends Component {
           <Link onClick={this.relieveLink} to="/group" className="logo">
             <div className="href">
               <span className="img">
-                <LogoSVG length="32px" />
+                <LogoSVG length="147px" />
               </span>
             </div>
           </Link>

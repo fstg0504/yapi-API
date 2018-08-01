@@ -869,6 +869,7 @@ class InterfaceEditForm extends Component {
             </FormItem>
           )}
         </div>
+        <hr/>
 
         <h2 className="interface-title">请求参数设置</h2>
 
@@ -1041,7 +1042,7 @@ class InterfaceEditForm extends Component {
             </Row>
           ) : null}
         </div>
-
+        <hr/>
         {/* ----------- Response ------------- */}
 
         <h2 className="interface-title">
@@ -1075,8 +1076,8 @@ class InterfaceEditForm extends Component {
               </Tabs>
               <div style={{ marginTop: '10px' }}>
                 {!this.props.form.getFieldValue('res_body_is_json_schema') ? (
-                  <div style={{ padding: '10px 0', fontSize: '15px' }}>
-                    <span>
+                  <div style={{ padding: '10px 0', fontSize: '15px',color: '#333333' }}>
+                    <span style={{ color: '#333333' }}>
                       基于 mockjs 和 json5,使用注释方式写参数说明{' '}
                       <Tooltip title={<pre>{Json5Example}</pre>}>
                         <Icon type="question-circle-o" style={{ color: '#086dbf' }} />
@@ -1146,7 +1147,7 @@ class InterfaceEditForm extends Component {
             </Col>
           </Row>
         </div>
-
+        <hr/>
         {/* ----------- remark ------------- */}
 
         <h2 className="interface-title">备 注</h2>
@@ -1157,7 +1158,7 @@ class InterfaceEditForm extends Component {
             </div>
           </FormItem>
         </div>
-
+        <hr/>
         {/* ----------- email ------------- */}
         <h2 className="interface-title">其 他</h2>
         <div className="panel-sub">

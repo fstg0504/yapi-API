@@ -122,6 +122,10 @@
   .row {
     margin-bottom: .16rem;
     line-height: 36px;
+    .tag-status.undone{}
+    .tag-status.undone::before {
+      background-color: #f58909;
+    }
   }
   .user-img {
     position: absolute;

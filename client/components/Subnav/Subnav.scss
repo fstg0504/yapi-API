@@ -2,6 +2,7 @@
 
 .m-subnav {
   margin-bottom: .24rem;
+  margin-top: 0.48rem;
   background-color: #fff;
   box-shadow: 0 0 .04rem rgba(0, 0, 0, .08);
   font-size: .14rem;
@@ -11,11 +12,33 @@
    }
   .m-subnav-menu {
     border: none;
-    padding: 0 .24rem;
+    padding: 0 0;
     .item {
-      line-height: .54rem;
-      padding: 0 .36rem;
+      line-height: .68rem;
+      padding: 0 .43rem;
       font-weight: normal;
+      width: 1.7rem;
+      text-align: center;
+      border-top: 3px solid transparent;
+      border-right: 1px solid #e2e2e2;
+      border-bottom: none;
+      &:hover{
+        border-top:3px solid #8fb300;
+        border-bottom: none;
+      }
+      &:last-child{
+        //border-right: none;
+      }
+      a{
+        color: #323232;
+      }
+    }
+    .item.ant-menu-item-selected{
+      border-top:3px solid #8fb300;
+      border-bottom: none;
+      a{
+        color: #8fb300;
+      }
     }
   }
 }

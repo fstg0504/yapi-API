@@ -50,7 +50,7 @@ class AceEditor extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.editor) {
       return;
     }

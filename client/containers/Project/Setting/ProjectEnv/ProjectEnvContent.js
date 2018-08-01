@@ -96,7 +96,7 @@ class ProjectEnvContent extends Component {
     this.setState({ ...newValue });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let curEnvName = this.props.projectMsg.name;
     let nextEnvName = nextProps.projectMsg.name;
     if (curEnvName !== nextEnvName) {

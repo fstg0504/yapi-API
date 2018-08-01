@@ -206,7 +206,7 @@ class ProjectMessage extends Component {
     });
   };
 
-  async componentWillMount() {
+  async UNSAFE_componentWillMount() {
     await this.props.fetchGroupList();
     // await this.props.getProject(this.props.projectId);
     await this.props.fetchGroupMsg(this.props.projectMsg.group_id);

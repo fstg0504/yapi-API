@@ -4,8 +4,6 @@ module.exports = {
   },{
     name: 'import-har'
   },{
-    name: 'advanced-mock'
-  },{
     name: 'import-swagger'
   },{
     name: 'statistics'
@@ -13,7 +11,5 @@ module.exports = {
     name: 'export-data'
   },{
     name: 'import-yapi-json'
-  },{
-    name: 'wiki'
   }]
 }

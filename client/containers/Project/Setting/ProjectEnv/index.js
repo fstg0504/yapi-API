@@ -51,7 +51,7 @@ class ProjectEnv extends Component {
     });
   }
 
-  async componentWillMount() {
+  async UNSAFE_componentWillMount() {
     await this.props.getProject(this.props.projectId);
     const { env, _id } = this.props.projectMsg;
     this.initState(env, _id);

@@ -33,13 +33,16 @@ Thumbs.db
 # *.tar
 # *.tar.gz
 
+node_modules/*
 node_modules/
 runtime/
 /prd/
+/static/prd/
 /dev/
 .tags
 .tags1
 tsconfig.json
 client/plugin-module.js
 .vscode
-/iconfont
+iconfont
+/iconfont/*

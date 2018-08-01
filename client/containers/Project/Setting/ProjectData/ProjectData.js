@@ -73,7 +73,7 @@ class ProjectData extends Component {
     updateLogList: PropTypes.array
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     axios.get(`/api/interface/getCatMenu?project_id=${this.props.match.params.id}`).then(data => {
       if (data.data.errcode === 0) {
         let menuList = data.data.data;
