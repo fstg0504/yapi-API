@@ -274,8 +274,8 @@ export default class HeaderCom extends Component {
       .logoutActions()
       .then(res => {
         if (res.payload.data.errcode == 0) {
-          this.props.history.push('/');
-          this.props.changeMenuItem('/');
+          this.props.history.push('/login');
+          this.props.changeMenuItem('/login');
           message.success('退出成功! ');
         } else {
           message.error(res.payload.data.errmsg);
@@ -296,12 +296,15 @@ export default class HeaderCom extends Component {
   checkLoginState = () => {
     this.props.checkLoginState
       .then(res => {
+          console.log('299res',res)
+        debugger;
         if (res.payload.data.errcode !== 0) {
-          this.props.history.push('/');
+          this.props.history.push('/login');
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log('err',err);
+          this.props.history.push('/login');
       });
   };
 

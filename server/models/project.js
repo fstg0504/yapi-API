@@ -14,11 +14,13 @@ class projectModel extends baseModel {
       switch_notice: { type: Boolean, default: true },
       desc: String,
       group_id: { type: Number, required: true },
+      appid: { type: String, required: true },
       project_type: { type: String, required: true, enum: ['public', 'private'] },
       members: [
         {
           uid: Number,
           role: { type: String, enum: ['owner', 'dev'] },
+          roleid: Number,
           username: String,
           email: String,
           email_notice: { type: Boolean, default: true }

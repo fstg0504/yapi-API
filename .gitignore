@@ -38,11 +38,13 @@ node_modules/
 runtime/
 /prd/
 /static/prd/
+/static/prd/*
+static/prd/*
 /dev/
 .tags
 .tags1
 tsconfig.json
-client/plugin-module.js
+# client/plugin-module.js
 .vscode
 iconfont
 /iconfont/*

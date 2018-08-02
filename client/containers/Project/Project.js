@@ -5,7 +5,7 @@ import { Route, Switch, Redirect, matchPath } from 'react-router-dom';
 import { Subnav } from '../../components/index';
 import { fetchGroupMsg } from '../../reducer/modules/group';
 import { setBreadcrumb } from '../../reducer/modules/user';
-import { getProject } from '../../reducer/modules/project';
+import { getProject, getProjectMemberList2 } from '../../reducer/modules/project';
 import Interface from './Interface/Interface.js';
 import Activity from './Activity/Activity.js';
 import Setting from './Setting/Setting.js';
@@ -17,12 +17,14 @@ const plugin = require('client/plugin.js');
   state => {
     return {
       curProject: state.project.currProject,
-      currGroup: state.group.currGroup
+      currGroup: state.group.currGroup,
+      user: state.user
     };
   },
   {
     getProject,
     fetchGroupMsg,
+    getProjectMemberList2,
     setBreadcrumb
   }
 )
@@ -31,6 +33,7 @@ export default class Project extends Component {
     match: PropTypes.object,
     curProject: PropTypes.object,
     getProject: PropTypes.func,
+    getProjectMemberList2: PropTypes.func,
     location: PropTypes.object,
     fetchGroupMsg: PropTypes.func,
     setBreadcrumb: PropTypes.func,
@@ -40,9 +43,14 @@ export default class Project extends Component {
   constructor(props) {
     super(props);
   }
-
+  state = {
+      roleid: '', role:''
+  }
   async UNSAFE_componentWillMount() {
-    await this.props.getProject(this.props.match.params.id);
+    await this.props.getProject(this.props.match.params.id).then(res => {
+      console.log(res)
+      debugger;
+    });
     await this.props.fetchGroupMsg(this.props.curProject.group_id);
 
     this.props.setBreadcrumb([
@@ -54,6 +62,21 @@ export default class Project extends Component {
         name: this.props.curProject.name
       }
     ]);
+    const { user } = this.props;
+    this.props.getProjectMemberList2(this.props.match.params.id).then(res => {
+      if (res.payload.data.errcode === 0) {
+        let memlist = res.payload.data.data;
+          for(let i in memlist){
+              let node = memlist[i]
+              if(node.email === user.email) {
+                  this.setState({
+                      roleid: node.roleid,
+                      role: node.role
+                  });
+              }
+          }
+      }
+    });
   }
 
   async UNSAFE_componentWillReceiveProps(nextProps) {
@@ -76,14 +99,19 @@ export default class Project extends Component {
 
   render() {
     const { match, location } = this.props;
+    const { roleid, role } = this.state;
     let routers = {
       interface: { name: '接口', path: '/project/:id/interface/:action', component: Interface },
       activity: { name: '动态', path: '/project/:id/activity', component: Activity },
-      data: { name: '数据管理', path: '/project/:id/data', component: ProjectData },
-      members: { name: '成员管理', path: '/project/:id/members', component: ProjectMember },
-      setting: { name: '设置', path: '/project/:id/setting', component: Setting }
+      data: { name: '数据管理', path: '/project/:id/data', component: ProjectData }
+        //项目经理才有以下权限
+      // members: { name: '成员管理', path: '/project/:id/members', component: ProjectMember },
+      // setting: { name: '设置', path: '/project/:id/setting', component: Setting }
     };
-
+    if(role === 'owner'){
+        routers.members = { name: '成员管理', path: '/project/:id/members', component: ProjectMember }
+        routers.setting = { name: '设置', path: '/project/:id/setting', component: Setting }
+    }
     plugin.emitHook('sub_nav', routers);
 
     let key, defaultName;
@@ -133,7 +161,7 @@ export default class Project extends Component {
       subnavData.push(value);
     });
 
-    if (this.props.currGroup.type === 'private') {
+    if (this.props.currGroup.type === 'private' || Number(roleid) === 5 || Number(roleid)=== 6) {
       subnavData = subnavData.filter(item => {
         return item.name != '成员管理';
       });

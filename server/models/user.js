@@ -19,6 +19,7 @@ class userModel extends baseModel {
                 type: String,
                 required: true
             },
+            userid: Number,
             passsalt: String,
             study: {type: Boolean, default: false},
             role: String,
@@ -66,6 +67,12 @@ class userModel extends baseModel {
     findById(id) {
         return this.model.findOne({
             _id: id
+        });
+    }
+
+    findByUserId(id) {
+        return this.model.findOne({
+            userid: id
         });
     }
 

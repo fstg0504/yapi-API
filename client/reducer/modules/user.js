@@ -48,6 +48,7 @@ export default (state = initialState, action) => {
         role: action.payload.data.data ? action.payload.data.data.role : null,
         loginState: action.payload.data.errcode == 0 ? MEMBER_STATUS : GUEST_STATUS,
         userName: action.payload.data.data ? action.payload.data.data.username : null,
+        email: action.payload.data.data ? action.payload.data.data.email : null,
         uid: action.payload.data.data ? action.payload.data.data._id : null,
         type: action.payload.data.data ? action.payload.data.data.type : null,
         study: action.payload.data.data ? action.payload.data.data.study : false
@@ -61,6 +62,7 @@ export default (state = initialState, action) => {
           loginState: MEMBER_STATUS,
           uid: action.payload.data.data.uid,
           userName: action.payload.data.data.username,
+          email: action.payload.data.data.email,
           role: action.payload.data.data.role,
           type: action.payload.data.data.type,
           study: action.payload.data.data.study
@@ -132,11 +134,14 @@ export default (state = initialState, action) => {
 export function checkLoginState() {
   return dispatch => {
     axios.get('/api/user/status').then(res => {
+      console.log('checkLoginState',res)
       dispatch({
         type: GET_LOGIN_STATE,
         payload: res
       });
-    });
+    }).catch(err => {
+        console.log('143err',err);
+    });;
   };
 }
 

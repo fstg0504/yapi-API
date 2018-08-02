@@ -218,9 +218,7 @@ module.exports = async (ctx, next) => {
         if (interfaceData.res_body_is_json_schema === true) {
           //json-schema
           const schema = yapi.commons.json_parse(interfaceData.res_body);
-          res = yapi.commons.schemaToJson(schema, {
-            alwaysFakeOptionals: true
-          });
+          res = yapi.commons.schemaToJson(schema);
         } else {
           // console.log('header', ctx.request.header['content-type'].indexOf('multipart/form-data'))
           // 处理 format-data

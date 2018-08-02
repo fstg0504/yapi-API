@@ -11,6 +11,7 @@ const PROJECT_UPDATE_ENV = 'yapi/project/PROJECT_UPDATE_ENV';
 const PROJECT_UPSET = 'yapi/project/PROJECT_UPSET';
 const GET_CURR_PROJECT = 'yapi/project/GET_CURR_PROJECT';
 const GET_PEOJECT_MEMBER = 'yapi/project/GET_PEOJECT_MEMBER';
+const GET_PEOJECT_MEMBER2 = 'yapi/project/GET_PEOJECT_MEMBER2';
 const ADD_PROJECT_MEMBER = 'yapi/project/ADD_PROJECT_MEMBER';
 const DEL_PROJECT_MEMBER = 'yapi/project/DEL_PROJECT_MEMBER';
 const CHANGE_PROJECT_MEMBER = 'yapi/project/CHANGE_PROJECT_MEMBER';
@@ -159,6 +160,14 @@ export function changeMemberEmailNotice(param) {
 export function getProjectMemberList(id) {
   return {
     type: GET_PEOJECT_MEMBER,
+    payload: axios.get('/api/project/get_member_list', {
+      params: { id }
+    })
+  };
+}
+export function getProjectMemberList2(id) {
+  return {
+    type: GET_PEOJECT_MEMBER2,
     payload: axios.get('/api/project/get_member_list', {
       params: { id }
     })

@@ -8,7 +8,6 @@ const interfaceColModel = require('../models/interfaceCol.js');
 const interfaceCaseModel = require('../models/interfaceCase.js');
 const interfaceModel = require('../models/interface.js');
 const userModel = require('../models/user.js');
-const followModel = require('../models/follow.js');
 const json5 = require('json5');
 const _ = require('underscore');
 const Ajv = require('ajv');
@@ -35,7 +34,6 @@ formats.forEach(item => {
 
 exports.schemaToJson = function(schema, options = {}) {
   Object.assign(options, defaultOptions);
-
   jsf.option(options);
   let result;
   try {
@@ -275,7 +273,6 @@ exports.sandbox = (sandbox, script) => {
   script.runInContext(context, {
     timeout: 3000
   });
-
   return sandbox;
 };
 
@@ -506,7 +503,6 @@ function convertString(variable) {
 
 exports.runCaseScript = async function runCaseScript(params) {
   let script = params.script;
-  // script 是断言
   if (!script) {
     return yapi.commons.resReturn('ok');
   }
@@ -526,13 +522,11 @@ exports.runCaseScript = async function runCaseScript(params) {
   let result = {};
   try {
     result = yapi.commons.sandbox(context, script);
-
     result.logs = logs;
     return yapi.commons.resReturn(result);
   } catch (err) {
     logs.push(convertString(err));
     result.logs = logs;
-
     return yapi.commons.resReturn(result, 400, err.name + ': ' + err.message);
   }
 };
@@ -541,48 +535,26 @@ exports.getUserdata = async function getUserdata(uid, role) {
   role = role || 'dev';
   let userInst = yapi.getInst(userModel);
   let userData = await userInst.findById(uid);
-  if (!userData) {
+  let userIdData = await userInst.findByUserId(uid);
+  if (!userData && !userIdData) {
     return null;
   }
-  return {
-    role: role,
-    uid: userData._id,
-    username: userData.username,
-    email: userData.email
-  };
-};
-
-exports.sendNotice = async function (projectId, data) {
-  const followInst = yapi.getInst(followModel);
-  const userInst = yapi.getInst(userModel);
-  const projectInst = yapi.getInst(projectModel);
-  const list = await followInst.listByProjectId(projectId);
-  const starUsers = list.map(item => item.uid);
-
-  const projectList = await projectInst.get(projectId);
-  const projectMenbers = projectList.members
-    .filter(item => item.email_notice)
-    .map(item => item.uid);
-
-  const users = arrUnique(projectMenbers, starUsers);
-  const usersInfo = await userInst.findByUids(users);
-  const emails = usersInfo.map(item => item.email).join(',');
-
-  try {
-    yapi.commons.sendMail({
-      to: emails,
-      contents: data.content,
-      subject: data.title
-    });
-  } catch (e) {
-    yapi.commons.log('邮件发送失败：' + e, 'error');
+  if (userData){
+    return {
+      role: role,
+      uid: userData._id,
+      username: userData.username,
+      email: userData.email
+    };
   }
+  if (userIdData){
+    return {
+      role: role,
+      uid: userIdData._id,
+      username: userIdData.username,
+      email: userIdData.email
+    };
+  }
+  
 };
 
-function arrUnique(arr1, arr2) {
-  let arr = arr1.concat(arr2);
-  let res = arr.filter(function(item, index, arr) {
-    return arr.indexOf(item) === index;
-  });
-  return res;
-}

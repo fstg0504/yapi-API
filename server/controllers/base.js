@@ -6,6 +6,8 @@ const groupModel = require('../models/group.js');
 const tokenModel = require('../models/token.js');
 const _ = require('underscore');
 const jwt = require('jsonwebtoken');
+const redis = require('redis')
+const client = redis.createClient(6382, '192.168.13.183', {})
 
 class baseController {
   constructor(ctx) {
@@ -32,7 +34,7 @@ class baseController {
     ];
     if (ignoreRouter.indexOf(ctx.path) > -1) {
       this.$auth = true;
-    } else {
+    }else {
       await this.checkLogin(ctx);
     }
 
@@ -43,42 +45,42 @@ class baseController {
       '/api/interface/save',
       '/api/interface/up',
       '/api/interface/add_cat'
-    ];
+    ]
 
-    let params = Object.assign({}, ctx.query, ctx.request.body);
-    let token = params.token;
+    let params = Object.assign({}, ctx.query, ctx.request.body)
+    let token = params.token ;
+    
+    if(token && openApiRouter.indexOf(ctx.path) > -1){
+      if(this.$auth){
+        ctx.params.project_id = await this.getProjectIdByToken(token)
 
-    if (token && openApiRouter.indexOf(ctx.path) > -1) {
-      if (this.$auth) {
-        ctx.params.project_id = await this.getProjectIdByToken(token);
-
-        if (!ctx.params.project_id) {
-          return (this.$tokenAuth = false);
+        if(!ctx.params.project_id){
+          return this.$tokenAuth = false;
         }
-        return (this.$tokenAuth = true);
+        return this.$tokenAuth = true;
       }
-
+      
       let checkId = await this.getProjectIdByToken(token);
       let projectData = await this.projectModel.get(checkId);
-      if (projectData) {
+      if(projectData) {
         ctx.params.project_id = checkId;
         this.$tokenAuth = true;
-        this.$uid = '999999';
+        this.$uid = '999999'
         this.$user = {
           _id: this.$uid,
           role: 'member',
           username: 'system'
-        };
-        this.$auth = true;
-      }
+        }
+        this.$auth = true
+      };
     }
   }
 
-  async getProjectIdByToken(token) {
+  async getProjectIdByToken(token){
     let projectId = await this.tokenModel.findId(token);
-    if (projectId) {
-      return projectId.toObject().project_id;
-    }
+    if(projectId) {
+      return projectId.toObject().project_id
+    } 
   }
 
   getUid() {
@@ -88,63 +90,106 @@ class baseController {
   async checkLogin(ctx) {
     let token = ctx.cookies.get('_yapi_token');
     let uid = ctx.cookies.get('_yapi_uid');
+    var user = {}
     try {
-      if (!token || !uid) {
-        return false;
-      }
       let userInst = yapi.getInst(userModel); //创建user实体
-      let result = await userInst.findById(uid);
-      if (!result) {
-        return false;
+      let sid = ctx.cookies.get('connect.sid')
+      let userIcon = ctx.cookies.get('userIcon')
+      if (sid) {
+        let sessionid=sid.slice(4, sid.indexOf('.'))
+        let searchid = 'sess:'+sessionid
+        let promiseClient = (searchid)=>{
+          return new Promise ((resolve,reject) =>{
+            client.get(searchid, (err,data)=>{
+              return err ? reject(err) : resolve(data)
+            })
+          })
+        }
+        let data = await promiseClient(searchid)
+        data = eval ("(" + data + ")")
+        if (data && data.userid){
+          user = data
+        }
       }
+      
+      // let sessResult = await userInst.findByUserId(data.userid)
+      // let token = jwt.sign({ uid: sessResult._id}, sessResult.passsalt, { expiresIn: '7 days' })
+      // ctx.cookies.set('_yapi_token', token, {
+      //   expires: yapi.commons.expireDate(7),
+      //   httpOnly: true
+      // });
+      // ctx.cookies.set('_yapi_uid', sessResult._id, {
+      //   expires: yapi.commons.expireDate(7),
+      //   httpOnly: true
+      // })
+      
 
-      let decoded;
-      try {
-        decoded = jwt.verify(token, result.passsalt);
-      } catch (err) {
-        return false;
-      }
-
-      if (decoded.uid == uid) {
-        this.$uid = uid;
+      // let userInst = yapi.getInst(userModel); //创建user实体
+      if (user && user.userid){
+        let sessResult = await userInst.findByUserId(user.userid)
+        this.$uid = sessResult._id;
         this.$auth = true;
-        this.$user = result;
+        this.$user = sessResult;
         return true;
+      } else {
+        if (uid && token){
+          let result = await userInst.findById(uid);
+          this.$uid = uid
+          this.$auth = true;
+          this.$user = result
+          return true;
+        }
+        return false
       }
+      
+      
 
-      return false;
+      // let decoded;
+      // try{
+      //   decoded = jwt.verify(token, result.passsalt || sessResult.passsalt);
+      //   console.log(decoded)
+      // }catch(err){
+      //   return false;
+      // }
+
+      // if (decoded.uid == uid) {
+      //   this.$uid = uid;
+      //   this.$auth = true;
+      //   this.$user = result;
+      //   return true;
+      // }
+
+      // if (result || sessResult) {
+      //   this.$uid = uid || sessResult._id;
+      //   this.$auth = true;
+      //   this.$user = result || sessResult;
+      //   return true;
+      // }
     } catch (e) {
-      yapi.commons.log(e, 'error');
+      yapi.commons.log(e, 'error')
       return false;
     }
+
   }
 
   async checkLDAP() {
     // console.log('config', yapi.WEBCONFIG);
     if (!yapi.WEBCONFIG.ldapLogin) {
-      return false;
+      return false
     } else {
-      return yapi.WEBCONFIG.ldapLogin.enable || false;
+      return yapi.WEBCONFIG.ldapLogin.enable || false
     }
+
   }
   /**
-   *
-   * @param {*} ctx
+   * 
+   * @param {*} ctx 
    */
 
   async getLoginStatus(ctx) {
     let body;
-    if ((await this.checkLogin(ctx)) === true) {
-      let result = yapi.commons.fieldSelect(this.$user, [
-        '_id',
-        'username',
-        'email',
-        'up_time',
-        'add_time',
-        'role',
-        'type',
-        'study'
-      ]);
+    if (await this.checkLogin(ctx) === true) {
+      let result = yapi.commons.fieldSelect(this.$user, ['_id', 'username', 'email', 'up_time', 'add_time', 'role', 'type', 'study']);
       body = yapi.commons.resReturn(result);
     } else {
       body = yapi.commons.resReturn(null, 40011, '请登录...');
@@ -174,7 +219,7 @@ class baseController {
       }
       if (type === 'interface') {
         let interfaceInst = yapi.getInst(interfaceModel);
-        let interfaceData = await interfaceInst.get(id);
+        let interfaceData = await interfaceInst.get(id)
         result.interfaceData = interfaceData;
         // 项目创建者相当于 owner
         if (interfaceData.uid === this.getUid()) {
@@ -191,11 +236,12 @@ class baseController {
           // 建立项目的人
           return 'owner';
         }
-        let memberData = _.find(projectData.members, m => {
+        let memberData = _.find(projectData.members, (m) => {
           if (m.uid === this.getUid()) {
             return true;
           }
-        });
+        })
+        
 
         if (memberData && memberData.role) {
           if (memberData.role === 'owner') {
@@ -207,7 +253,7 @@ class baseController {
           }
         }
         type = 'group';
-        id = projectData.group_id;
+        id = projectData.group_id
       }
 
       if (type === 'group') {
@@ -218,37 +264,40 @@ class baseController {
           return 'owner';
         }
 
-        let groupMemberData = _.find(groupData.members, m => {
+        
+        let groupMemberData = _.find(groupData.members, (m) => {
           if (m.uid === this.getUid()) {
             return true;
           }
-        });
+        })
         if (groupMemberData && groupMemberData.role) {
           if (groupMemberData.role === 'owner') {
             return 'owner';
           } else if (groupMemberData.role === 'dev') {
-            return 'dev';
+            return 'dev'
           } else {
-            return 'guest';
+            return 'guest'
           }
         }
       }
 
       return 'member';
-    } catch (e) {
-      yapi.commons.log(e, 'error');
+    }
+    catch (e) {
+      yapi.commons.log(e, 'error')
       return false;
     }
   }
   /**
    * 身份验证
    * @param {*} id type对应的id
-   * @param {*} type enum[interface, project, group]
+   * @param {*} type enum[interface, project, group] 
    * @param {*} action enum[ danger, edit, view ] danger只有owner或管理员才能操作,edit只要是dev或以上就能执行
    */
   async checkAuth(id, type, action) {
-    let role = await this.getProjectRole(id, type);
 
+    let role = await this.getProjectRole(id, type);
+    
     if (action === 'danger') {
       if (role === 'admin' || role === 'owner') {
         return true;
