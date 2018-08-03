@@ -232,9 +232,9 @@ class MemberList extends Component {
                   className="select"
                   onChange={this.changeUserRole}
                 >
-                  <Option value={'owner-' + record.uid}>组长</Option>
-                  <Option value={'dev-' + record.uid}>开发者</Option>
-                  <Option value={'guest-' + record.uid}>访客</Option>
+                  <Option value={'owner-' + record.uid}>项目经理</Option>
+                  <Option value={'dev-' + record.uid}>后端工程师</Option>
+                  <Option value={'guest-' + record.uid}>前端工程师</Option>
                 </Select>
                 <Popconfirm
                   placement="topRight"
@@ -251,11 +251,14 @@ class MemberList extends Component {
           } else {
             // 非管理员可以看到权限 但无法修改
             if (record.role === 'owner') {
-              return '组长';
+              // return '组长';
+              return '项目经理';
             } else if (record.role === 'dev') {
-              return '开发者';
+              // return '开发者';
+              return '后端工程师';
             } else if (record.role === 'guest') {
-              return '访客';
+              // return '访客';
+              return '前端工程师';
             } else {
               return '';
             }
@@ -302,9 +305,9 @@ class MemberList extends Component {
               </Col>
               <Col span="15">
                 <Select defaultValue="dev" className="select" onChange={this.changeNewMemberRole}>
-                  <Option value="owner">组长</Option>
-                  <Option value="dev">开发者</Option>
-                  <Option value="guest">访客</Option>
+                  <Option value="owner">项目经理</Option>
+                  <Option value="dev">后端工程师</Option>
+                  <Option value="guest">前端工程师</Option>
                 </Select>
               </Col>
             </Row>

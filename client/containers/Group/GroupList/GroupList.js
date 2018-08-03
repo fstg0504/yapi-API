@@ -1,14 +1,13 @@
 import React, { PureComponent as Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Icon, Modal, Input, message, Row, Menu, Col, Popover, Tooltip } from 'antd';
+import { Icon, Modal, Input, message, Row, Menu, Col, Tooltip } from 'antd';
 import { autobind } from 'core-decorators';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 const { TextArea } = Input;
 const Search = Input.Search;
 import UsernameAutoComplete from '../../../components/UsernameAutoComplete/UsernameAutoComplete.js';
-import GuideBtns from '../../../components/GuideBtns/GuideBtns.js';
 import { fetchNewsData } from '../../../reducer/modules/news.js';
 import {
   fetchGroupList,
@@ -20,15 +19,6 @@ import _ from 'underscore';
 
 import './GroupList.scss';
 
-const tip = (
-  <div className="title-container">
-    <h3 className="title">欢迎使用 YApi ~</h3>
-    <p>
-      这里的 <b>“个人空间”</b>{' '}
-      是你自己才能看到的分组，你拥有这个分组的全部权限，可以在这个分组里探索 YApi 的功能。
-    </p>
-  </div>
-);
 
 @connect(
   state => ({
@@ -216,7 +206,6 @@ export default class GroupList extends Component {
     const { currGroup } = this.props;
     return (
       <div className="m-group">
-        {!this.props.study ? <div className="study-mask" /> : null}
         <div className="group-bar">
           <div className="curr-group">
             <div className="curr-group-name">
@@ -260,15 +249,7 @@ export default class GroupList extends Component {
                     style={{ zIndex: this.props.studyTip === 0 ? 3 : 1 }}
                   >
                     <Icon type="user" />
-                    <Popover
-                      overlayClassName="popover-index"
-                      content={<GuideBtns />}
-                      title={tip}
-                      placement="right"
-                      visible={this.props.studyTip === 0 && !this.props.study}
-                    >
-                      {group.group_name}
-                    </Popover>
+                    {group.group_name}
                   </Menu.Item>
                 );
               } else {
@@ -308,7 +289,7 @@ export default class GroupList extends Component {
             </Row>
             <Row gutter={6} className="modal-input">
               <Col span="5">
-                <div className="label">组长：</div>
+                <div className="label">项目经理：</div>
               </Col>
               <Col span="15">
                 <UsernameAutoComplete callbackState={this.onUserSelect} />

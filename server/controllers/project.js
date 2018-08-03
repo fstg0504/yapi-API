@@ -13,8 +13,10 @@ const userController = require('../controllers/user')
 const logModel = require('../models/log.js');
 const followModel = require('../models/follow.js');
 const tokenModel = require('../models/token.js');
+const avatarModel = require('../models/avatar.js');
 
 const sha = require('sha.js');
+const https = require('https');
 
 class projectController extends baseController {
   constructor(ctx) {
@@ -204,11 +206,13 @@ class projectController extends baseController {
       group_id: params.group_id,
       group_name: params.group_name,
       icon: params.icon,
+      iconUrl: ctx.request.body.iconUrl,
       color: params.color,
       add_time: yapi.commons.time(),
       up_time: yapi.commons.time(),
       env: [{ name: 'local', domain: 'http://127.0.0.1' }]
     };
+    console.log('添加项目接口 参数', data);
 
     let result = await this.Model.save(data);
     let colInst = yapi.getInst(interfaceColModel);
@@ -393,6 +397,7 @@ class projectController extends baseController {
     for (let i = 0, len = params.member_uids.length; i < len; i++) {
       let id = params.member_uids[i];
       let userdata = await yapi.commons.getUserdata(id, params.role);
+      console.log('userdata ', userdata)
       if (!userdata) {
         no_members.push(id);
       } else {
@@ -416,7 +421,7 @@ class projectController extends baseController {
     if (no_members.length && ctx.request.body.email && no_members.length==1 && ctx.request.body.roleid){
       let userc = yapi.getInst(userController);
       ctx.request.body.password = 'apicloud'
-      ctx.request.body.username = ctx.request.body.email
+      ctx.request.body.username = ctx.request.body.realName || ctx.request.body.email
       ctx.request.body.userid = no_members[0]
       // 调用注册方法
       let res = await userc.reg(ctx)
@@ -424,6 +429,32 @@ class projectController extends baseController {
       let userInst = yapi.getInst(userModel);
       let reguser = await userInst.findByUserId(no_members[0])
       console.log('注册用户',reguser)
+      // 添加用户头像
+      let avatarInst = yapi.getInst(avatarModel);
+      let result = await avatarInst.upIcon(reguser._id, ctx.request.body.icon1, ctx.request.body.icon2, ctx.request.body.icon3)
+      // let url = 'https://www.apicloud.com' + ctx.request.body.icon1
+      
+      // https.get(url,function(res){
+      //   var chunks = [];
+      //   var size = 0;
+      //   res.on('data',function(chunk){
+      //     chunks.push(chunk);
+      //     size += chunk.length
+      //   })
+      //   res.on('end',function(err){
+      //     var data = Buffer.concat(chunks, size);
+      //     console.log(Buffer.isBuffer(data));
+      //     var base64Img = data.toString('base64');
+      //     let avatarInsts = yapi.getInst(avatarModel);
+      //     let result = avatarInsts.up(reguser._id, base64Img, 'image/png');
+      //     console.log(result);
+      //   })
+      //   res.on('error', function(err){
+      //     console.log(err)
+      //   })
+      // })
+
+      console.log('添加用户头像结果', result)
       add_members[0] = {
         role: params.role,
         roleid: ctx.request.body.roleid,
@@ -666,8 +697,12 @@ class projectController extends baseController {
   async changeMemberRole(ctx) {
     let params = ctx.request.body;
     let projectInst = yapi.getInst(projectModel);
-
-    var check = await projectInst.checkMemberRepeat(params.id, params.member_uid);
+    let userdata = await yapi.commons.getUserdata(params.member_uid);
+    if (!userdata || !userdata.uid){
+      return (ctx.body = yapi.commons.resReturn(null, 400, '项目成员未注册'));
+    }
+    console.log(userdata)
+    var check = await projectInst.checkMemberRepeat(params.id, userdata.uid);
     if (check === 0) {
       return (ctx.body = yapi.commons.resReturn(null, 400, '项目成员不存在'));
     }
@@ -682,12 +717,17 @@ class projectController extends baseController {
       guest: '前端工程师'
     };
 
-    let result = await projectInst.changeMemberRole(params.id, params.member_uid, params.role);
+    let result = ''
+    if (ctx.request.body.roleid){
+      result = await projectInst.changeMemberRoleid(params.id, userdata.uid, params.role, ctx.request.body.roleid);
+    } else {
+      result = await projectInst.changeMemberRole(params.id, userdata.uid, params.role);
+    }
 
     let username = this.getUsername();
     yapi
       .getInst(userModel)
-      .findById(params.member_uid)
+      .findById(userdata.uid)
       .then(member => {
         yapi.commons.saveLog({
           content: `<a href="/user/profile/${this.getUid()}">${username}</a> 修改了项目中的成员 <a href="/user/profile/${

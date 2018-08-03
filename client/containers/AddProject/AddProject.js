@@ -188,7 +188,7 @@ class ProjectList extends Component {
                 <RadioGroup>
                   <Radio value="private" className="radio">
                     <Icon type="lock" />私有<br />
-                    <span className="radio-desc">只有组长和项目开发者可以索引并查看项目信息</span>
+                    <span className="radio-desc">只有项目经理和项目开发者可以索引并查看项目信息</span>
                   </Radio>
                   <br />
                   <Radio value="public" className="radio">

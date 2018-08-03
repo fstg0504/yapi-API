@@ -3,7 +3,24 @@
 .nav-tooltip {
   color: red;
 }
-
+.ant-dropdown{
+  .user-menu{
+    background: #ffffff;
+    color: #9F9F9F;
+    .ant-menu-item{
+      a{
+        color: #9F9F9F;
+        font-size: 14px;
+      }
+    }
+    .ant-menu-item.ant-menu-item-active{
+      background-color: #EDEDED;
+      a{
+        color: #99AC53;
+      }
+    }
+  }
+}
 .user-menu.ant-menu.ant-menu-dark .ant-menu-item-selected {
   background: #32363a;
   color: rgba(255, 255, 255, 0.67);
@@ -117,6 +134,7 @@
         // .ant-avatar > img{
         //   height: auto;
         // }
+        display: inline-block;
         .avatar-image{
           margin-bottom: -10px;
           display: inline-block;

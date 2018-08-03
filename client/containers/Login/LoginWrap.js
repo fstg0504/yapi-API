@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import LoginForm from './Login';
-import RegForm from './Reg';
 import './Login.scss';
 const TabPane = Tabs.TabPane;
 
@@ -30,9 +29,6 @@ export default class LoginWrap extends Component {
       >
         <TabPane tab="登录" key="1">
           <LoginForm />
-        </TabPane>
-        <TabPane tab="注册" key="2">
-          <RegForm />
         </TabPane>
       </Tabs>
     );

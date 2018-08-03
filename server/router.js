@@ -121,6 +121,11 @@ let routerConfig = {
 			"path": "find",
 			"method": "get"
 		},
+                {
+                        "action": "findByUserid",
+                        "path": "find_userid",
+                        "method": "get"
+                },
 		{
 			"action": "update",
 			"path": "update",

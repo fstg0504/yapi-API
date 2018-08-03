@@ -14,7 +14,6 @@ class projectModel extends baseModel {
       switch_notice: { type: Boolean, default: true },
       desc: String,
       group_id: { type: Number, required: true },
-      appid: { type: String, required: true },
       project_type: { type: String, required: true, enum: ['public', 'private'] },
       members: [
         {
@@ -220,6 +219,18 @@ class projectModel extends baseModel {
       },
       {
         $set: { 'members.$.role': role }
+      }
+    );
+  }
+
+  changeMemberRoleid(id, uid, role, roleid) {
+    return this.model.update(
+      {
+        _id: id,
+        'members.uid': uid
+      },
+      {
+        $set: { 'members.$.role': role, 'members.$.roleid': roleid }
       }
     );
   }

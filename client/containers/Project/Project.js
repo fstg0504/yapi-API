@@ -47,21 +47,29 @@ export default class Project extends Component {
       roleid: '', role:''
   }
   async UNSAFE_componentWillMount() {
-    await this.props.getProject(this.props.match.params.id).then(res => {
-      console.log(res)
-      debugger;
-    });
+    await this.props.getProject(this.props.match.params.id);
     await this.props.fetchGroupMsg(this.props.curProject.group_id);
+    console.log('UNSAFE_componentWillMount', this.props)
+    let crumb;
+    if(this.props.curProject.role !== 'owner'){
+      crumb = [
+          {
+              name: this.props.curProject.name
+          }
+      ];
+    } else {
+      crumb = [
+          {
+              name: this.props.currGroup.group_name,
+              href: '/group/' + this.props.currGroup._id
+          },
+          {
+              name: this.props.curProject.name
+          }
+      ];
+    }
+    this.props.setBreadcrumb(crumb);
 
-    this.props.setBreadcrumb([
-      {
-        name: this.props.currGroup.group_name,
-        href: '/group/' + this.props.currGroup._id
-      },
-      {
-        name: this.props.curProject.name
-      }
-    ]);
     const { user } = this.props;
     this.props.getProjectMemberList2(this.props.match.params.id).then(res => {
       if (res.payload.data.errcode === 0) {
@@ -98,6 +106,7 @@ export default class Project extends Component {
   }
 
   render() {
+    console.log('this.Project',this.props)
     const { match, location } = this.props;
     const { roleid, role } = this.state;
     let routers = {

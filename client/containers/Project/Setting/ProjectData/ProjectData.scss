@@ -85,6 +85,9 @@
           }
           .ant-switch-checked .ant-switch-inner{}
         }
+      .ant-switch-checked {
+        background-color: #729f00;
+      }
       .ant-upload{
         p.ant-upload-drag-icon .anticon {
           color: #729f00;

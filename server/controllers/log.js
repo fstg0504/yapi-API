@@ -43,7 +43,7 @@ class logController extends baseController {
       page = ctx.request.query.page || 1,
       limit = ctx.request.query.limit || 10,
       type = ctx.request.query.type,
-      interfaceId = ctx.request.query.interface_id;
+      interfaceId = ctx.request.query.selectValue;
     if (!typeid) {
       return ctx.body = yapi.commons.resReturn(null, 400, 'typeid不能为空');
     }

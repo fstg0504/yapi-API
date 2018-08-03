@@ -75,6 +75,11 @@ class userModel extends baseModel {
             userid: id
         });
     }
+    findByUserid(userid) {
+        return this.model.findOne({
+            userid: userid
+        });
+    }
 
     del(id) {
         return this.model.remove({

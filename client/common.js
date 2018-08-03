@@ -226,3 +226,6 @@ exports.arrayChangeIndex = (arr, start, end) => {
 
   return changes;
 };
+exports.hostconfig = {
+    origin: 'http://pwd.apicloud.com'
+};

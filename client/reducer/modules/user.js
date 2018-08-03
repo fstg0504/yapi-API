@@ -134,14 +134,13 @@ export default (state = initialState, action) => {
 export function checkLoginState() {
   return dispatch => {
     axios.get('/api/user/status').then(res => {
-      console.log('checkLoginState',res)
       dispatch({
         type: GET_LOGIN_STATE,
         payload: res
       });
     }).catch(err => {
         console.log('143err',err);
-    });;
+    });
   };
 }
 

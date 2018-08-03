@@ -14,6 +14,7 @@ import {
   Tooltip
 } from 'antd';
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie'
 import { fetchGroupMsg } from '../../../../reducer/modules/group';
 import { connect } from 'react-redux';
 import ErrMsg from '../../../../components/ErrMsg/ErrMsg.js';
@@ -235,6 +236,7 @@ class ProjectMember extends Component {
 
   render() {
     const isEmailChangeEable = this.state.role === 'owner' || this.state.role === 'admin';
+    const origin = '//www.apicloud.com';
     const columns = [
       {
         title:
@@ -242,9 +244,18 @@ class ProjectMember extends Component {
         dataIndex: 'username',
         key: 'username',
         render: (text, record) => {
+            let imageUrl;
+            const thisuid = this.props.uid
+            if(thisuid === record.uid){
+                let userIcon = Cookies.get('userIcon');
+                imageUrl = origin+'/'+userIcon;
+            } else {
+                imageUrl = '/api/user/avatar?uid=' + record.uid
+            }
           return (
             <div className="m-user">
-              <img src={'/api/user/avatar?uid=' + record.uid} className="m-user-img" />
+              {/*<img src={'/api/user/avatar?uid=' + record.uid} className="m-user-img" />*/}
+              <img src={imageUrl} className="m-user-img" />
               <p className="m-user-name">{text}</p>
               <Tooltip placement="top" title="邮件通知">
                 <span>
@@ -286,6 +297,7 @@ class ProjectMember extends Component {
                   value={record.role + '-' + record.uid}
                   className="select"
                   onChange={this.changeUserRole}
+                  disabled
                 >
                   <Option value={'owner-' + record.uid}>项目经理</Option>
                   <Option value={'dev-' + record.uid}>后端工程师</Option>
@@ -402,15 +414,19 @@ class ProjectMember extends Component {
           >
             {this.state.groupMemberList.length ? (
               this.state.groupMemberList.map((item, index) => {
+                  let imageUrl2;
+                  const thisuid = this.props.uid
+                  if(thisuid === item.uid){
+                      let userIcon = Cookies.get('userIcon');
+                      imageUrl2 = origin+'/'+userIcon;
+                  } else {
+                      imageUrl2 = '/api/user/avatar?uid=' + item.uid
+                  }
                 return (
                   <div key={index} className="card-item">
                     <img
                       src={
-                        location.protocol +
-                        '//' +
-                        location.host +
-                        '/api/user/avatar?uid=' +
-                        item.uid
+                          imageUrl2
                       }
                       className="item-img"
                     />

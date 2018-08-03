@@ -10,6 +10,7 @@ const projectModel = require('../models/project.js');
 const avatarModel = require('../models/avatar.js');
 
 const jwt = require('jsonwebtoken');
+const https = require('https');
 
 class userController extends baseController {
   constructor(ctx) {
@@ -589,14 +590,47 @@ class userController extends baseController {
       let avatarInst = yapi.getInst(avatarModel);
       let data = await avatarInst.get(uid);
       let dataBuffer, type;
-      if (!data || !data.basecode) {
-        dataBuffer = yapi.fs.readFileSync(yapi.path.join(yapi.WEBROOT, 'static/image/avatar.png'));
-        type = 'image/png'
-      } else {
+      
+      if (data && data.basecode){
         type = data.type;
         dataBuffer = new Buffer(data.basecode, 'base64');
+      } else {
+        if(data && data.icon1){
+          let url = 'https://www.apicloud.com' + data.icon1
+          let downloadIcon = (url) => {
+            return new Promise((resolve,reject)=>{
+              https.get(url,function(res){
+                var chunks = [];
+                var size = 0;
+                res.on('data',function(chunk){
+                  chunks.push(chunk);
+                  size += chunk.length
+                })
+                res.on('end',function(err){
+                  var data = Buffer.concat(chunks, size);
+                  console.log(Buffer.isBuffer(data));
+                  var base64Img = data.toString('base64');
+                  console.log(base64Img)
+                  resolve(base64Img)
+                })
+                res.on('error', function(err){
+                  reject(err)
+                })
+              })
+            })  
+          }
+          let result = await downloadIcon(url)
+          // 头像base64存入数据库
+          let avatarInsts = yapi.getInst(avatarModel);
+          let resu = await avatarInsts.up(uid, result, 'image/png');
+          dataBuffer = new Buffer(result, 'base64');
+          console.log(dataBuffer)
+          type = 'image/png'
+        } else {
+          dataBuffer = yapi.fs.readFileSync(yapi.path.join(yapi.WEBROOT, 'static/image/avatar.png'));
+          type = 'image/png'
+        }
       }
-
       ctx.set('Content-type', type);
       ctx.body = dataBuffer;
     } catch (err) {
