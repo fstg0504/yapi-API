@@ -49,7 +49,6 @@ export default class Project extends Component {
   async UNSAFE_componentWillMount() {
     await this.props.getProject(this.props.match.params.id);
     await this.props.fetchGroupMsg(this.props.curProject.group_id);
-    console.log('UNSAFE_componentWillMount', this.props)
     let crumb;
     if(this.props.curProject.role !== 'owner'){
       crumb = [
@@ -106,7 +105,6 @@ export default class Project extends Component {
   }
 
   render() {
-    console.log('this.Project',this.props)
     const { match, location } = this.props;
     const { roleid, role } = this.state;
     let routers = {

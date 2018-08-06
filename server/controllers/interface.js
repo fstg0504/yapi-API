@@ -205,7 +205,7 @@ class interfaceController extends baseController {
     yapi.emitHook('interface_add', result._id).then();
     this.catModel.get(params.catid).then((cate) => {
       let username = this.getUsername();
-      let title = `<a href="/user/profile/${this.getUid()}">${username}</a> 为分类 <a href="/project/${params.project_id}/interface/api/cat_${params.catid}">${cate.name}</a> 添加了接口 <a href="/project/${params.project_id}/interface/api/${result._id}">${data.title}</a> `
+      let title = `${username} 为分类 <a href="/project/${params.project_id}/interface/api/cat_${params.catid}">${cate.name}</a> 添加了接口 <a href="/project/${params.project_id}/interface/api/${result._id}">${data.title}</a> `
 
       yapi.commons.saveLog({
         content: title,
@@ -571,7 +571,7 @@ class interfaceController extends baseController {
 
     this.catModel.get(interfaceData.catid).then((cate) => {
       yapi.commons.saveLog({
-        content: `<a href="/user/profile/${this.getUid()}">${username}</a> 
+        content: `${username}
                     更新了分类 <a href="/project/${cate.project_id}/interface/api/cat_${data.catid}">${cate.name}</a> 
                     下的接口 <a href="/project/${cate.project_id}/interface/api/${id}">${interfaceData.title}</a><p>${params.message}</p>`,
         type: 'project',
@@ -666,7 +666,7 @@ class interfaceController extends baseController {
       let username = this.getUsername();
       this.catModel.get(inter.catid).then((cate) => {
         yapi.commons.saveLog({
-          content: `<a href="/user/profile/${this.getUid()}">${username}</a> 删除了分类 <a href="/project/${cate.project_id}/interface/api/cat_${inter.catid}">${cate.name}</a> 下的接口 "${inter.title}"`,
+          content: `${username} 删除了分类 <a href="/project/${cate.project_id}/interface/api/cat_${inter.catid}">${cate.name}</a> 下的接口 "${inter.title}"`,
           type: 'project',
           uid: this.getUid(),
           username: username,
@@ -744,7 +744,7 @@ class interfaceController extends baseController {
 
       let username = this.getUsername();
       yapi.commons.saveLog({
-        content: `<a href="/user/profile/${this.getUid()}">${username}</a> 添加了分类  <a href="/project/${params.project_id}/interface/api/cat_${result._id}">${params.name}</a>`,
+        content: `${username} 添加了分类  <a href="/project/${params.project_id}/interface/api/cat_${result._id}">${params.name}</a>`,
         type: 'project',
         uid: this.getUid(),
         username: username,
@@ -775,7 +775,7 @@ class interfaceController extends baseController {
         return ctx.body = yapi.commons.resReturn(null, 400, '没有权限');
       }
       yapi.commons.saveLog({
-        content: `<a href="/user/profile/${this.getUid()}">${username}</a> 更新了分类 <a href="/project/${cate.project_id}/interface/api/cat_${params.catid}">${cate.name}</a>`,
+        content: `${username} 更新了分类 <a href="/project/${cate.project_id}/interface/api/cat_${params.catid}">${cate.name}</a>`,
         type: 'project',
         uid: this.getUid(),
         username: username,
@@ -805,7 +805,7 @@ class interfaceController extends baseController {
 
       let username = this.getUsername();
       yapi.commons.saveLog({
-        content: `<a href="/user/profile/${this.getUid()}">${username}</a> 删除了分类 "${catData.name}" 及该分类下的接口`,
+        content: `${username} 删除了分类 "${catData.name}" 及该分类下的接口`,
         type: 'project',
         uid: this.getUid(),
         username: username,

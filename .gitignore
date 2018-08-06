@@ -35,11 +35,9 @@ Thumbs.db
 
 node_modules/*
 node_modules/
-runtime/
-/prd/
-/static/prd/
-/static/prd/*
 static/prd/*
+static/prd/*.zip
+static/prd/*.js
 /dev/
 .tags
 .tags1

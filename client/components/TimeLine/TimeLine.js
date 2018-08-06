@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { formatTime } from '../../common.js';
 import showDiffMsg from '../../../common/diff-view.js';
 import variable from '../../constants/variable';
-import { Link } from 'react-router-dom';
 import { fetchNewsData, fetchMoreNews } from '../../reducer/modules/news.js';
 import { fetchInterfaceList } from '../../reducer/modules/interface.js';
 import ErrMsg from '../ErrMsg/ErrMsg.js';
@@ -230,9 +229,9 @@ class TimeTree extends Component {
         return (
           <Timeline.Item
             dot={
-              <Link to={`/user/profile/${item.uid}`}>
+              <span>
                 <Avatar src={`/api/user/avatar?uid=${item.uid}`} />
-              </Link>
+              </span>
             }
             key={i}
           >

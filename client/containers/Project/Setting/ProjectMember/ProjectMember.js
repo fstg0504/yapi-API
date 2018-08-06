@@ -4,12 +4,10 @@ import {
   Card,
   Badge,
   Select,
-  Button,
   Modal,
   Row,
   Col,
   message,
-  Popconfirm,
   Switch,
   Tooltip
 } from 'antd';
@@ -276,14 +274,7 @@ class ProjectMember extends Component {
       {
         title:
           this.state.role === 'owner' || this.state.role === 'admin' ? (
-            <div className="btn-container">
-              <Button className="btn" type="primary" icon="plus" onClick={this.showAddMemberModal}>
-                添加成员
-              </Button>
-              <Button className="btn" icon="plus" onClick={this.showImportMemberModal}>
-                批量导入成员
-              </Button>
-            </div>
+            <div className="btn-container"></div>
           ) : (
             ''
           ),
@@ -303,15 +294,6 @@ class ProjectMember extends Component {
                   <Option value={'dev-' + record.uid}>后端工程师</Option>
                   <Option value={'guest-' + record.uid}>前端工程师</Option>
                 </Select>
-                <Popconfirm
-                  placement="topRight"
-                  title="你确定要删除吗? "
-                  onConfirm={this.deleteConfirm(record.uid)}
-                  okText="确定"
-                  cancelText=""
-                >
-                  <Button type="danger" icon="delete" className="btn-danger" />
-                </Popconfirm>
               </div>
             );
           } else {
