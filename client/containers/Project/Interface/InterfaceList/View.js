@@ -3,7 +3,6 @@ import React, { PureComponent as Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Table, Icon, Row, Col, Tooltip, message } from 'antd';
-import { Link } from 'react-router-dom';
 import AceEditor from 'client/components/AceEditor/AceEditor';
 import { formatTime } from '../../../../common.js';
 import ErrMsg from '../../../../components/ErrMsg/ErrMsg.js';
@@ -377,10 +376,10 @@ class View extends Component {
               创&ensp;建&ensp;人：
             </Col>
             <Col span={8} className="colValue">
-              <Link className="user-name" to={'/user/profile/' + this.props.curData.uid}>
+              <span className="user-name">
                 <img src={'/api/user/avatar?uid=' + this.props.curData.uid} className="user-img" />
                 {this.props.curData.username}
-              </Link>
+              </span>
             </Col>
           </Row>
           <Row className="row">
