@@ -28,7 +28,7 @@
   "author": "",
   "license": "Apache2.0",
   "dependencies": {
-    "ajv": "^5.5.1",
+    "ajv": "^6.12.3",
     "ajv-i18n": "^2.2.0",
     "axios": "^0.16.2",
     "copy-to-clipboard": "3.0.8",
